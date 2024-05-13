@@ -1,6 +1,7 @@
 from pyspark.sql import SparkSession
 from pyspark.sql import SQLContext
 import glob
+import pandas as pd
 
 if __name__ == '__main__':
     scSpark = SparkSession \
@@ -49,8 +50,11 @@ except Exception:
   print("output3 error")
 
 try:
- output.write.format('json').mode('overwrite').save('filtered.json')
- print("dosya kaydi")
+# output.write.format('json').mode('overwrite').save('filtered.json')
+#pandas kütüphanesinin fonksiyonu ile load (extract-transform-load) kısmını gerçekleştirdim benim hadoop setupımda sorun olduğu için #ddataframei pandas dataframine dönüştürüp yazdık
+ pandas_df=sdfData.toPandas()
+ pandas_df.to_json('filtered.json',orient='records',lines=True)
+ print("success")
 except Exception as error:
   print("error 53")
   print(error)
